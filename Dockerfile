@@ -1,4 +1,4 @@
-FROM docker:git
+FROM docker:19.03-git
 
 RUN apk update && \
 	apk add --no-cache \
@@ -16,5 +16,5 @@ RUN apk update && \
 		musl-dev \
 		libffi-dev \
 		openssl-dev \
-		openssh &&
+		openssh && \
 	pip3 install ansible molecule docker
