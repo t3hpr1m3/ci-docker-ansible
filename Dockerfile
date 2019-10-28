@@ -17,4 +17,4 @@ RUN apk update && \
 		libffi-dev \
 		openssl-dev \
 		openssh && \
-	pip3 install ansible molecule docker
+	pip3 install ansible molecule docker netaddr
