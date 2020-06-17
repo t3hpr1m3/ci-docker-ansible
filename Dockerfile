@@ -1,6 +1,6 @@
 FROM docker:19.03-git
 
-ENV pip_packages = "ansible molecule yamllint docker ansible-lint flake8 testinfra"
+ENV pip_packages "ansible molecule yamllint docker ansible-lint flake8 testinfra netaddr"
 
 RUN apk update && \
 	apk add --no-cache \
