@@ -1,5 +1,7 @@
 FROM docker:19.03-git
 
+ENV pip_packages = "ansible molecule yamllint docker ansible-lint flake8 testinfra"
+
 RUN apk update && \
 	apk add --no-cache \
 		docker \
@@ -17,4 +19,4 @@ RUN apk update && \
 		libffi-dev \
 		openssl-dev \
 		openssh && \
-	pip3 install ansible molecule docker netaddr
+	pip3 install $pip_packages
