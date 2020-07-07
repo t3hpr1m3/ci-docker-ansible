@@ -15,7 +15,7 @@ Python versions (installed via [pyenv](https://github.com/pyenv/pyenv)):
 
 ## Tags
 
-- `19.03`: Tracks upstream (`docker:19.03-git`)
+- [19.03](https://git.dubzland.net/jdubz/ci-docker-ansible/blob/main/Dockerfile): Tracks upstream ([docker:19.03-git](https://github.com/docker-library/docker/blob/7a67842e7ff12c1426ae6a67ac1b7a701b51f3df/19.03/git/Dockerfile))
 
 ## License
 
@@ -23,4 +23,4 @@ MIT
 
 ## Author
 
-* [Josh Williams](https://codingprime.com)
+* [Josh Williams](https://dubzland.net)

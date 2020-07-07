@@ -12,11 +12,22 @@ build:
   script:
     - docker build --pull -t $CI_REGISTRY_IMAGE .
 
-push-image:
+push-tag:
+  stage: deploy
+  script:
+    - docker build --pull -t $CI_REGISTRY_IMAGE .
+    - docker tag $CI_REGISTRY_IMAGE $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG
+    - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG
+  except:
+    refs:
+      - main
+
+push-latest:
   stage: deploy
   script:
     - docker build --pull -t $CI_REGISTRY_IMAGE .
     - docker tag $CI_REGISTRY_IMAGE $CI_REGISTRY_IMAGE:latest
-    - docker tag $CI_REGISTRY_IMAGE $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG
     - docker push $CI_REGISTRY_IMAGE:latest
-    - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG
+  only:
+    refs:
+      - main
