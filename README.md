@@ -1,8 +1,6 @@
 # Ansible Molecule CI image
 
 [![Gitlab pipeline status (self-hosted)](https://img.shields.io/gitlab/pipeline/jdubz/ci-docker-ansible/main?gitlab_url=https%3A%2F%2Fgit.dubzland.net)](https://git.dubzland.net/jdubz/ci-docker-ansible/)
-[![Docker Build Status](https://img.shields.io/docker/cloud/build/jdubz/ci-docker-ansible.svg?maxAge=2592000)](https://hub.docker.com/r/jdubz/ci-docker-ansible/)
-[![Docker Automated build](https://img.shields.io/docker/cloud/automated/jdubz/ci-docker-ansible.svg?maxAge=2592000)](https://hub.docker.com/r/jdubz/ci-docker-ansible/)
 [![Docker pulls](https://img.shields.io/docker/pulls/jdubz/ci-docker-ansible.svg?maxAge=2592000)](https://hub.docker.com/r/jdubz/ci-docker-ansible/)
 
 For testing Ansible playbooks and roles on Gitlab CI.  Includes the following
