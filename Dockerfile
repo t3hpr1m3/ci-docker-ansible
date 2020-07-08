@@ -17,10 +17,6 @@ RUN apk add --no-cache \
 		xz && \
 	curl https://pyenv.run | bash && \
 	apk del --no-network .fetch-deps && \
-	echo -e '[ -z "$PS1" ] && return\n\
-export PATH=$PYENV_ROOT/bin:$PATH\n\
-eval "$(pyenv init -)"\n\
-eval "$(pyenv virtualenv-init -)"\n' >> /root/.bashrc && \
 	apk add --no-cache --virtual .build-deps \
 		bzip2-dev \
 		coreutils \
@@ -46,6 +42,11 @@ eval "$(pyenv virtualenv-init -)"\n' >> /root/.bashrc && \
 		zlib-dev && \
 	for v in $install_python_versions; do PATH=$PYENV_ROOT/bin:$PATH MAKEOPTS="-j$(nproc)" pyenv install $v; done && \
 	PATH=$PYENV_ROOT/bin:$PATH pyenv global $default_python_version && \
-	apk del --no-network .build-deps
+	apk del --no-network .build-deps && \
+	echo -e '[ -n "$BASHRC_SOURCED" ] && return\n\
+export BASHRC_SOURCED=1\n\
+export PATH=$PYENV_ROOT/bin:$PATH\n\
+eval "$(pyenv init -)"\n\
+eval "$(pyenv virtualenv-init -)"\n' >> /root/.bashrc
 
 CMD ["/bin/bash"]
