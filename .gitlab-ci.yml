@@ -5,20 +5,25 @@ services:
   - docker:19.03.1-dind
 
 before_script:
-  - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
-  - docker login -u $DOCKER_REGISTRY_USER -p $DOCKER_REGISTRY_PASSWORD $DOCKER_REGISTRY
+  - echo -n $CI_JOB_TOKEN | docker login -u gitlab-ci-token --password-stdin $CI_REGISTRY
+  - echo -n $DOCKER_REGISTRY_PASSWORD | docker login -u $DOCKER_REGISTRY_USER --password-stdin $DOCKER_REGISTRY
 
 build:
   stage: build
   script:
-    - docker build --pull -t $CI_REGISTRY_IMAGE .
-    - docker push $CI_REGISTRY_IMAGE
+    - docker pull $CI_REGISTRY_IMAGE:latest || true
+    - docker build --pull --cache-from $CI_REGISTRY_IMAGE:latest -t $CI_REGISTRY_IMAGE$CI_COMMIT_SHA .
+    - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA
 
 push-tag:
   stage: deploy
+  variables:
+    GIT_STRATEGY: none
   script:
-    - docker build --pull -t $CI_REGISTRY_IMAGE .
-    - docker tag $CI_REGISTRY_IMAGE $DOCKER_REGISTRY/$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG
+    - docker pull $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA
+    - docker tag $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG
+    - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG
+    - docker tag $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA $DOCKER_REGISTRY/$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG
     - docker push $DOCKER_REGISTRY/$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG
   except:
     refs:
@@ -27,8 +32,13 @@ push-tag:
 push-latest:
   stage: deploy
   script:
-    - docker build --pull -t $CI_REGISTRY_IMAGE .
-    - docker tag $CI_REGISTRY_IMAGE $DOCKER_REGISTRY/$CI_REGISTRY_IMAGE:latest
+  variables:
+    GIT_STRATEGY: none
+  script:
+    - docker pull $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA
+    - docker tag $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA $CI_REGISTRY_IMAGE:latest
+    - docker push $CI_REGISTRY_IMAGE:latest
+    - docker tag $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA $DOCKER_REGISTRY/$CI_REGISTRY_IMAGE:latest
     - docker push $DOCKER_REGISTRY/$CI_REGISTRY_IMAGE:latest
   only:
     refs:
