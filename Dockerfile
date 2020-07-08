@@ -9,7 +9,12 @@ ENV PYENV_ROOT $pyenv_root
 RUN apk add --no-cache \
 		bash \
 		ca-certificates \
-		curl && \
+		curl \
+		gcc \
+		libffi-dev \
+		make \
+		musl-dev \
+		openssl-dev && \
 	apk add --no-cache --virtual .fetch-deps \
 		curl \
 		gnupg \
@@ -20,16 +25,12 @@ RUN apk add --no-cache \
 	apk add --no-cache --virtual .build-deps \
 		bzip2-dev \
 		coreutils \
-		gcc \
 		gdbm-dev \
 		libc-dev \
-		libffi-dev \
 		libnsl-dev \
 		libtirpc-dev \
 		linux-headers \
-		make \
 		ncurses-dev \
-		openssl-dev \
 		patch \
 		pax-utils \
 		readline-dev \
